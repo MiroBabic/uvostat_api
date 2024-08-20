@@ -137,7 +137,8 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
                     "viac_dodavatelov_id": []
                 }
             ]
-        }
+        },
+.... ďalšie záznamy
 ]
 }
 ```
