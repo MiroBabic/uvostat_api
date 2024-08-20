@@ -7,6 +7,10 @@ Táto dokumentácia poskytuje prehľad o API endpointoch pre portál UVOstat.sk.
 ## Autentifikácia
 Všetky API požiadavky vyžadujú hlavičku `ApiToken` pre autentifikáciu. Bez platného tokenu API vráti odpoveď `401 Unauthorized`.
 
+## Základná URL
+```http
+https://www.uvostat.sk
+```
 
 ## Endpoints
 
