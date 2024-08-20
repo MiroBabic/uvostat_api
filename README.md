@@ -525,7 +525,7 @@ GET /api/dodavatelia?ico[]=46456082
 ```
 
 
-### 5. Získanie CRZ zmlúv
+### 5. Získanie zmlúv z CRZ 
 
 **Endpoint:** `/api/crz_zmluvy`
 
