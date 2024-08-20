@@ -642,10 +642,10 @@ GET /api/crz_zmluvy?objednavatel_ico[]=42085519&dodavatel_ico[]=51196603
 - API vracia dáta vo formáte JSON s kódovaním UTF-8.
 
 #### Dôležité:
-Ak je možné, že v dotaze bude viac ako jeden záznam (napríklad pre parameter `obstaravatel_ico`), parameter musí byť volaný s použitím hranatých zátvoriek `[]`.
+Ak je možné, že v dotaze bude viac ako jeden záznam (napríklad pre parameter `obstaravatel_id`), parameter musí byť volaný s použitím hranatých zátvoriek `[]`.
 
 Príklad správnej požiadavky:
 
 ```http
-GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_ico[]=42085519
+GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
 ```
