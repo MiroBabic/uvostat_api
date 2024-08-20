@@ -647,5 +647,5 @@ Ak je možné, že v dotaze bude viac ako jeden záznam (napríklad pre paramete
 Príklad správnej požiadavky:
 
 ```http
-GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
+GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_ico[]=42085519
 ```
