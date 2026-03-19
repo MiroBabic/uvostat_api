@@ -635,9 +635,165 @@ GET /api/crz_zmluvy?objednavatel_ico[]=42085519&dodavatel_ico[]=51196603
 }
 ```
 
+### 6. Získanie účtovných závierok z RÚZ
+
+**Endpoint:** `/api/ruz_zavierky`
+
+**Metóda:** `GET`
+
+**Popis:** Získa detailné dáta z registra účtovných závierok (RÚZ) pre konkrétny subjekt podľa IČO. Dáta sú štruktúrované po jednotlivých výkazoch, sekciách a riadkoch, pričom hodnoty sú zoskupené po rokoch.
+
+**Query parametre:**
+
+- `ico` (string, povinné): IČO subjektu, pre ktorý sa majú načítať RÚZ dáta.
+- `iba_vyplnene` (boolean, voliteľné): Ak je nastavené na `true`, vo výstupe budú iba riadky, ktoré majú vyplnenú aspoň jednu hodnotu. Predvolené: `false`.
+- `limit` (integer, voliteľné): Maximálny počet rokov, ktoré sa majú zahrnúť do výstupu. Predvolené: `1`, maximum: `100`.
+
+**Príklad požiadavky:**
+
+```http
+GET /api/ruz_zavierky?ico=35815256&iba_vyplnene=true&limit=5
+```
+
+**Príklad odpovede:**
+
+```json
+{
+    "summary": {
+        "ico": "35815256",
+        "years_count": 2,
+        "templates_count": 2,
+        "sections_count": 4,
+        "rows_count": 128,
+        "iba_vyplnene": true,
+        "limit": 5
+    },
+    "data": {
+        "ico": "35815256",
+        "fin_mode": "company",
+        "iba_vyplnene": true,
+        "years": [
+            2024,
+            2023
+        ],
+        "year_headers": [
+            "2024",
+            "2023"
+        ],
+        "year_headers_by_year": {
+            "2024": "2024",
+            "2023": "2023"
+        },
+        "accounting_unit": {
+            "ruz_id": 123456,
+            "ico": "35815256",
+            "dic": "2020259802",
+            "accounting_unit_name": "Príklad, s.r.o.",
+            "city": "Bratislava",
+            "street": "Príkladná 1",
+            "zip_code": "81101",
+            "county": "Bratislavský",
+            "district": "Bratislava I",
+            "site": "https://example.sk",
+            "establish_date": "2001-05-14",
+            "last_update_date": "2025-02-01",
+            "legal_form": 112,
+            "org_size": "small",
+            "ownership_type": 1,
+            "sk_nace": "62010",
+            "consolidated": false,
+            "status": "active",
+            "data_source": "ruz"
+        },
+        "statements": [
+            {
+                "year": 2024,
+                "year_header": "2024",
+                "filling_date": "2025-03-20",
+                "compilation_date": "2025-03-15",
+                "reports_count": 2,
+                "reports": [
+                    {
+                        "ruz_accounting_report_id": 987654,
+                        "ruz_template_id": 101,
+                        "template_name": "Súvaha Úč POD 1-01",
+                        "term_from": "2024-01-01",
+                        "term_to": "2024-12-31",
+                        "previous_term_from": "2023-01-01",
+                        "previous_term_to": "2023-12-31",
+                        "data_source": "ruz"
+                    }
+                ]
+            }
+        ],
+        "templates": [
+            {
+                "name": "Súvaha Úč POD 1-01",
+                "label": "Súvaha",
+                "category": "balance_sheet",
+                "years": [
+                    2024,
+                    2023
+                ],
+                "sections": [
+                    {
+                        "type": "Strana aktív",
+                        "rows": [
+                            {
+                                "oznacenie": "001",
+                                "cislo_riadku": 1,
+                                "text": "SPOLU MAJETOK",
+                                "values_by_year": {
+                                    "2024": 1250000,
+                                    "2023": 1180000
+                                }
+                            },
+                            {
+                                "oznacenie": "002",
+                                "cislo_riadku": 2,
+                                "text": "Neobežný majetok",
+                                "values_by_year": {
+                                    "2024": 540000,
+                                    "2023": 510000
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Výkaz ziskov a strát Úč POD 2-01",
+                "label": "Výkaz ziskov a strát",
+                "category": "income_statement",
+                "years": [
+                    2024,
+                    2023
+                ],
+                "sections": [
+                    {
+                        "type": "Výkaz ziskov a strát",
+                        "rows": [
+                            {
+                                "oznacenie": "01",
+                                "cislo_riadku": 1,
+                                "text": "Tržby z predaja tovaru",
+                                "values_by_year": {
+                                    "2024": 350000,
+                                    "2023": 320000
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+```
+
 ### Poznámky
 
-- Parameter `limit` pre všetky endpointy je obmedzený na 100 záznamov na jednu požiadavku, aby sa predišlo výkonnostným problémom. Ak je potrebných viac záznamov, použite parameter `offset` na stránkovanie výsledkov.
+- Parameter `limit` je pre všetky endpointy obmedzený na hodnotu 100. Pri zoznamových endpointoch určuje počet vrátených záznamov na jednu požiadavku; pri endpointoch `/api/ruz_zavierky` určuje počet rokov zahrnutých do výstupu.
 - Dátumy by mali byť poskytnuté vo formáte `YYYY-MM-DD`.
 - API vracia dáta vo formáte JSON s kódovaním UTF-8.
 
