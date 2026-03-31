@@ -7,6 +7,10 @@ Táto dokumentácia poskytuje prehľad o API endpointoch pre portál UVOstat.sk.
 ## Autentifikácia
 Všetky API požiadavky vyžadujú hlavičku `ApiToken` pre autentifikáciu. Bez platného tokenu API vráti odpoveď `401 Unauthorized`.
 
+## Prístup
+- Endpoint `/api/subjekty` je zdarma pre každého registrovaného používateľa s platným `ApiToken`.
+- Ostatné API endpointy sú dostupné v rámci plateného API prístupu.
+
 ## Základná URL
 ```http
 https://www.uvostat.sk
@@ -787,6 +791,64 @@ GET /api/ruz_zavierky?ico=35815256&iba_vyplnene=true&limit=5
                 ]
             }
         ]
+    }
+}
+```
+
+### 7. Získanie základných údajov o firme z RPO
+
+**Endpoint:** `/api/subjekty`
+
+**Metóda:** `GET`
+
+**Popis:** Získa základné a rýchlo dostupné údaje o firme podľa IČO z tabuľky `RpoEntity` a doplní údaje o DPH z `RuzVatEntity`.
+
+**Prístup:** Tento endpoint je zdarma pre každého registrovaného používateľa s platným `ApiToken`.
+
+**Query parametre:**
+
+- `ico` (string, povinné): IČO subjektu, pre ktorý sa majú načítať základné údaje.
+
+**Príklad požiadavky:**
+
+```http
+GET /api/subjekty?ico=35815256
+```
+
+**Príklad odpovede:**
+
+```json
+{
+    "summary": {
+        "ico": "35815256",
+        "free_access": true,
+        "source": "rpo_entities"
+    },
+    "data": {
+        "rpo_id": 251445,
+        "ico": "35815256",
+        "dic": "2020259802",
+        "nazov": "Príklad, s.r.o.",
+        "pravna_forma_kod": "112",
+        "pravna_forma": "Spoločnosť s ručením obmedzeným",
+        "status": "active",
+        "mesto": "Bratislava",
+        "ulica": "Príkladná 1",
+        "psc": "81101",
+        "krajina": "Slovensko",
+        "nace_kod": "62010",
+        "nace": "Počítačové programovanie",
+        "zaznam_aktualizovany": "2026-03-31T08:00:00.000Z",
+        "dph": {
+            "ic_dph": "SK2020259802",
+            "platitel_dph": true,
+            "druh_registracie_dph": "§4",
+            "datum_registracie_dph": "2004-05-01",
+            "datum_zmeny_druhu_registracie_dph": null,
+            "platnost_od": "2004-05-01",
+            "platnost_do": null,
+            "zaznam_aktualizovany": "2026-03-30T22:10:00.000Z"
+        }
     }
 }
 ```
