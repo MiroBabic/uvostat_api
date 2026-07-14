@@ -37,6 +37,10 @@ https://www.uvostat.sk
 - `limit` (integer, voliteľné): Maximálny počet záznamov na vrátenie (predvolené: 100, maximum: 100).
 - `offset` (integer, voliteľné): Offset pre stránkovanie (predvolené: 0).
 
+**Subdodávky vo výstupe:**
+
+Každý záznam obsahuje aj polia `ma_subdodavatelov`, `pocet_subdodavatelov` a `subdodavatelia`. Ak pre výsledok obstarávania neexistujú spracované subdodávky, `subdodavatelia` je prázdne pole. Ak existujú, obsahuje naparsované údaje o hlavnom dodávateľovi, subdodávateľovi, podiele, hodnote a väzbe na zmluvu a zdrojový vestník.
+
 **Príklad požiadavky:**
 
 ```http
@@ -90,7 +94,10 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
             "kriteria_list": [],
             "zdroj": 1,
             "eks_id": null,
-            "zmluvy": []
+            "zmluvy": [],
+            "ma_subdodavatelov": false,
+            "pocet_subdodavatelov": 0,
+            "subdodavatelia": []
         },
         {
             "id": 1698418,
@@ -139,6 +146,33 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
                     "casti": null,
                     "viac_dodavatelov": null,
                     "viac_dodavatelov_id": []
+                }
+            ],
+            "ma_subdodavatelov": true,
+            "pocet_subdodavatelov": 1,
+            "subdodavatelia": [
+                {
+                    "subdodavka_id": 1,
+                    "obstaravanie_id": 1698418,
+                    "zmluva_id": 337820,
+                    "vestnik_data_json_id": 263,
+                    "hlavny_dodavatel_id": 18769,
+                    "hlavny_dodavatel_meno": "Hlavný dodávateľ s.r.o.",
+                    "hlavny_dodavatel_ico": "12345678",
+                    "hlavny_dodavatel_org_ref": "ORG-0001",
+                    "subdodavatel_id": 98123,
+                    "subdodavatel_meno": "Subdodávateľ s.r.o.",
+                    "subdodavatel_ico": "87654321",
+                    "subdodavatel_org_ref": "ORG-0002",
+                    "identifikator_zmluvy": "CON-0001",
+                    "identifikator_ponuky": "TEN-0001",
+                    "popis": "Časť plnenia zmluvy realizovaná subdodávateľom",
+                    "podiel_percent": "25.0",
+                    "odhadovana_hodnota": "10000.0",
+                    "mena": "EUR",
+                    "zdrojove_polia": {},
+                    "zaznam_vytvoreny": "2026-07-07T12:00:00.000Z",
+                    "zaznam_aktualizovany": "2026-07-07T12:00:00.000Z"
                 }
             ]
         },
@@ -639,7 +673,133 @@ GET /api/crz_zmluvy?objednavatel_ico[]=42085519&dodavatel_ico[]=51196603
 }
 ```
 
-### 6. Získanie účtovných závierok z RÚZ
+### 6. Získanie súhrnných správ
+
+**Endpoint:** `/api/suhrnne_spravy`
+
+**Metóda:** `GET`
+
+**Popis:** Získa normalizované súhrnné správy z vestníka VO vrátane zákaziek a zmlúv uvedených v správe.
+
+**Query parametre:**
+
+- `obstaravatel_ico` (string, voliteľné): Čiarkou oddelený zoznam IČO obstarávateľov na filtrovanie.
+- `dodavatel_ico` (string, voliteľné): Čiarkou oddelený zoznam IČO dodávateľov uvedených v zákazkách súhrnnej správy.
+- `datum_zverejnenia_od` (date, voliteľné): Počiatočný dátum pre rozsah dátumov zverejnenia.
+- `datum_zverejnenia_do` (date, voliteľné): Koncový dátum pre rozsah dátumov zverejnenia.
+- `limit` (integer, voliteľné): Maximálny počet správ na vrátenie (predvolené: 100, maximum: 100).
+- `offset` (integer, voliteľné): Offset pre stránkovanie (predvolené: 0).
+
+**Príklad požiadavky:**
+
+```http
+GET /api/suhrnne_spravy?obstaravatel_ico[]=00306177&dodavatel_ico[]=35763469&datum_zverejnenia_od=2024-01-01&limit=10&offset=0
+```
+
+**Príklad odpovede:**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "total_contracts": 2,
+        "requested_contracts": 2,
+        "offset": 0,
+        "limit": 10,
+        "order_by": "zaznam_vytvoreny asc",
+        "min_created_at": "2024-04-10T12:00:00.000Z",
+        "max_created_at": "2024-04-10T12:00:00.000Z",
+        "min_datum_zverejnenia": "2024-04-09T00:00:00.000Z",
+        "max_datum_zverejnenia": "2024-04-09T00:00:00.000Z"
+    },
+    "data": [
+        {
+            "id": 12345,
+            "uvo_document_id": 987654,
+            "vestnik_data_json_id": 263,
+            "obstaravatel_id": 1001,
+            "typ_oznamenia": "Súhrnná správa",
+            "oprava": false,
+            "evidencne_cislo_oznamenia": "12345 - IPS",
+            "typ_suhrnnej_spravy": "Súhrnná správa o zákazkách s nízkou hodnotou",
+            "verzia_spravy": "01",
+            "datum_odoslania": "2024-04-08T00:00:00.000Z",
+            "obdobie_polrok": 1,
+            "obdobie_rok": 2024,
+            "vestnik_poradie": 70,
+            "vestnik_rok": 2024,
+            "datum_zverejnenia": "2024-04-09T00:00:00.000Z",
+            "obstaravatel_meno": "Mesto Príklad",
+            "obstaravatel_ico": "00306177",
+            "obstaravatel_dic": "2020123456",
+            "obstaravatel_ulica": "Hlavná",
+            "obstaravatel_cislo": "1",
+            "obstaravatel_mesto": "Príklad",
+            "obstaravatel_psc": "01001",
+            "obstaravatel_krajina": "SVK",
+            "obstaravatel_kontakt_meno": "Ján Novák",
+            "obstaravatel_email": "kontakt@example.sk",
+            "obstaravatel_tel": "+421900000000",
+            "obstaravatel_url": "https://example.sk",
+            "druh_zakazky": "Služby",
+            "doplnujuci_druh_zakazky": null,
+            "kod_opravy": null,
+            "odovodnenie_opravy": null,
+            "zhrnutie_opravy": null,
+            "odkaz_na_predchadzajucu_verziu": null,
+            "pocet_zakaziek": 2,
+            "zakazky": [
+                {
+                    "id": 555,
+                    "uvo_document_id": 987654,
+                    "dodavatel_id": 11460,
+                    "externe_id_zakazky": "1/2024",
+                    "nazov_zakazky": "Dodanie služieb",
+                    "druh_zakazky": "Služby",
+                    "doplnujuci_druh_zakazky": null,
+                    "vynimka": null,
+                    "ramcova_dohoda": false,
+                    "pocet_ponuk": 3,
+                    "pocet_ponuk_msp": 2,
+                    "pocet_ponuk_elektronicky": 3,
+                    "identifikator_zmluvy": "ZML-1/2024",
+                    "nazov_zmluvy": "Zmluva o dodaní služieb",
+                    "datum_uzavretia_zmluvy": "2024-03-20T00:00:00.000Z",
+                    "url_zmluvy": "https://example.sk/zmluva",
+                    "typ_hodnoty": "value",
+                    "hodnota": "12000.0",
+                    "najnizsia_ponuka": "11000.0",
+                    "najvyssia_ponuka": "14000.0",
+                    "mena": "EUR",
+                    "dodavatel_meno": "Dodávateľ, s.r.o.",
+                    "dodavatel_ico": "35763469",
+                    "dodavatel_dic": "2020123456",
+                    "dodavatel_ulica": "Dodávateľská",
+                    "dodavatel_cislo": "10",
+                    "dodavatel_mesto": "Bratislava",
+                    "dodavatel_psc": "81101",
+                    "dodavatel_krajina": "SVK",
+                    "dodavatel_kontakt_meno": null,
+                    "dodavatel_email": null,
+                    "dodavatel_tel": null,
+                    "dodavatel_url": null,
+                    "dodavatel_msp": true,
+                    "doplnujuce_informacie": null,
+                    "fingerprint": "summary-report-contract-fingerprint",
+                    "zaznam_vytvoreny": "2024-04-10T12:00:00.000Z",
+                    "zaznam_aktualizovany": "2024-04-10T12:00:00.000Z"
+                }
+            ],
+            "zaznam_spracovany": "2024-04-10T12:05:00.000Z",
+            "zaznam_vytvoreny": "2024-04-10T12:00:00.000Z",
+            "zaznam_aktualizovany": "2024-04-10T12:00:00.000Z"
+        }
+    ]
+}
+```
+
+### 7. Získanie účtovných závierok z RÚZ
 
 **Endpoint:** `/api/ruz_zavierky`
 
@@ -795,7 +955,7 @@ GET /api/ruz_zavierky?ico=35815256&iba_vyplnene=true&limit=5
 }
 ```
 
-### 7. Získanie základných údajov o firme z RPO
+### 8. Získanie základných údajov o firme z RPO
 
 **Endpoint:** `/api/subjekty`
 
