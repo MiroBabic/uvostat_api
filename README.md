@@ -1013,97 +1013,513 @@ GET /api/subjekty?ico=35815256
 }
 ```
 
-### 9. Projekty, výzvy, programy a priority ITMS21+
+### 9. Získanie projektov ITMS21+
 
-Všetky štyri endpointy vyžadujú platený API prístup a hlavičku `ApiToken`.
-Pole `id` vo výstupe obsahuje zdrojové ID z ITMS21+. Odpoveď obsahuje
-`summary` a pole `data`. Záznamy sú zoradené vzostupne podľa dátumu vytvorenia
-v ITMS21+ a potom podľa zdrojového ID. Chýbajúce dátumy sa radia na koniec.
-`limit` je predvolene a maximálne 100, `offset` je predvolene 0.
+**Endpoint** `/api/itms21_projekty`
 
-| Endpoint | Voliteľné filtre okrem `limit` a `offset` |
-| --- | --- |
-| `GET /api/itms21_projekty` | `id[]`, `kod[]`, `stav[]`, `prijimatel_ico[]`, `vyhlasovatel_ico[]`, `program[]`, `priorita_kod[]`, `priorita_nazov[]`, `vyzva_kod[]`, `vyzva_nazov[]`, `vyzva_typ[]`, `vyzva_stav[]`, `datum_zaciatku_realizacie_od`, `datum_zaciatku_realizacie_do`, `datum_konca_realizacie_od`, `datum_konca_realizacie_do` |
-| `GET /api/itms21_vyzvy` | `id[]`, `kod[]`, `nazov[]`, `typ[]`, `stav[]`, `datum_vyhlasenia_od`, `datum_vyhlasenia_do` |
-| `GET /api/itms21_programy` | `id[]`, `kod[]`, `nazov[]` |
-| `GET /api/itms21_priority` | `id[]`, `kod[]`, `nazov[]`, `program[]` |
+**Metóda** `GET`
 
-Textové filtre porovnávajú celé hodnoty bez ohľadu na veľkosť písmen.
-`program[]` prijíma kód alebo slovenský názov programu, `nazov[]` filtruje
-podľa slovenského názvu. Rozsahy dátumov projektov filtrujú skutočný začiatok
-a koniec realizácie vrátane hraničných dní. Stav výzvy je prvý aktívny príznak
-v poradí `zrusena`, `uzavreta`, `pozastavena`, `vyhlasena`. Bez aktívneho
-príznaku je stav `null`.
+**Popis** Získa projekty ITMS21+ s prijímateľom, výzvou, programom, prioritami, zmluvnými sumami a dostupnými detailmi realizácie. Pole `id` je zdrojové ID projektu. Priority vychádzajú zo špecifických cieľov projektu a `dostupny_v_zdroji` vyjadruje stav podľa posledného importu. Pri chýbajúcom detaile je dostupný základný záznam.
 
-Projekty vracajú prijímateľa, výzvu, program, priority, zmluvné sumy, dátumy
-realizácie a dostupné detaily ako opis, miesta, aktivity, ukazovatele a rozpočet.
-Priority v projekte vychádzajú z jeho špecifických cieľov. Pri chýbajúcom
-detaile ostáva dostupný základný záznam. Príznak `dostupny_v_zdroji` označuje
-dostupnosť projektu podľa posledného importu.
+**Query parametre**
 
-```http
-GET /api/itms21_projekty?prijimatel_ico[]=00123456&limit=20
-ApiToken: <token>
-```
+- `id[]` (integer[], voliteľné) – Zdrojové ID projektov ITMS21+.
+- `kod[]` (string[], voliteľné) – Kódy projektov.
+- `stav[]` (string[], voliteľné) – Stavy projektov.
+- `prijimatel_ico[]` (string[], voliteľné) – IČO prijímateľov.
+- `vyhlasovatel_ico[]` (string[], voliteľné) – IČO vyhlasovateľov výziev.
+- `program[]` (string[], voliteľné) – Kódy alebo slovenské názvy programov.
+- `priorita_kod[]` (string[], voliteľné) – Kódy priorít.
+- `priorita_nazov[]` (string[], voliteľné) – Slovenské názvy priorít.
+- `vyzva_kod[]` (string[], voliteľné) – Kódy výziev.
+- `vyzva_nazov[]` (string[], voliteľné) – Slovenské názvy výziev.
+- `vyzva_typ[]` (string[], voliteľné) – Typy výziev.
+- `vyzva_stav[]` (string[], voliteľné) – Stavy výziev `zrusena`, `uzavreta`, `pozastavena` alebo `vyhlasena`.
+- `datum_zaciatku_realizacie_od` (date, voliteľné) – Dolná hranica skutočného začiatku realizácie vrátane.
+- `datum_zaciatku_realizacie_do` (date, voliteľné) – Horná hranica skutočného začiatku realizácie vrátane.
+- `datum_konca_realizacie_od` (date, voliteľné) – Dolná hranica skutočného konca realizácie vrátane.
+- `datum_konca_realizacie_do` (date, voliteľné) – Horná hranica skutočného konca realizácie vrátane.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
 
-### 10. Dokumenty obstarávaní
+Textové filtre porovnávajú celé hodnoty bez ohľadu na veľkosť písmen. Všetky zoznamy ITMS21+ sú zoradené podľa dátumu vytvorenia a pri rovnakom dátume podľa zdrojového ID. Záznamy bez dátumu vytvorenia sú na konci.
 
-Endpointy vyžadujú platený prístup a hlavičku `ApiToken`. Podporujú
-`limit` (predvolene a najviac 100) a `offset` (predvolene 0).
-Odpoveď má formát `summary` a `data`.
-
-#### Zoznam dokumentov zákazky
-
-`GET /api/dokumenty_obstaravani?order_id[]=567257`
-
-Zadajte aspoň jedno ÚVO `order_id[]` alebo EKS `eks_id[]` (napríklad
-`Z2026000123`). Pri zadaní oboch filtrov sa vrátia dokumenty všetkých
-vybraných zákaziek. Dokumenty sú zoradené od najnovšieho podľa dátumu
-zverejnenia a pri rovnakom dátume od najvyššieho `id`.
-Zoznam zahŕňa dokumenty s načítanými metadátami.
-
-Každý dokument obsahuje `id`, `order_id`, `eks_id`, `nazov`, `typ_dokumentu`,
-`nazov_zakazky`, `obstaravatel_meno`, `obstaravatel_externe_id`, `zdroj`,
-`externe_id`, `url`, `datum_zverejnenia`, `datum_aktualizacie`, pole `zdroje`
-s odkazmi na zdrojové záznamy a pole `prilohy` s aktuálnymi deduplikovanými
-prílohami. Dokument bez aktuálnych príloh má `prilohy: []`.
-
-Každá príloha obsahuje `id`, `externe_id`, `nazov`, `zdroj`, `mime_typ`,
-`velkost_suboru` v bajtoch, `subor_url`, `stav_ocr` a `vyhladavatelne`.
-`subor_url` je priama HTTP/HTTPS adresa na stiahnutie zo zdrojového portálu
-alebo `null`, ak uložená adresa nie je použiteľná. `vyhladavatelne` znamená,
-že príloha má v stave `processed` alebo `partial` dostupný fulltextový index.
-
-#### Fulltext v prílohách jedného dokumentu
-
-`GET /api/dokumenty_obstaravani/123/vyhladavanie?query=izol%C3%A1cia`
-
-`123` je `id` dokumentu zo zoznamu. `query` je povinný text s dĺžkou najviac
-300 znakov. Hľadá sa v indexe aktuálnych príloh daného dokumentu. Pole `data`
-obsahuje rovnaké metadáta zhodných príloh ako `prilohy` v zozname, vrátane
-`subor_url`, zoradené podľa `id`. OCR text ani úryvky sa v odpovedi neposielajú.
-Pri nulovej zhode je `data: []`. Pri neexistujúcom dokumente API vráti `404`
-a pri chýbajúcom alebo neplatnom výraze vráti `422`.
-
-#### Fulltext podľa zákazky alebo obstarávateľa
+**Príklad požiadavky**
 
 ```http
-GET /api/dokumenty_obstaravani/vyhladavanie?order_id=567257&query=izol%C3%A1cia
-GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_ico=00123456&query=izol%C3%A1cia
-GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=123&query=izol%C3%A1cia
+GET /api/itms21_projekty?prijimatel_ico[]=00123456&limit=20&offset=0
 ```
 
-Zadajte povinný `query` a aspoň jeden z uvedených filtrov. Každý filter prijíma
-jednu hodnotu. Pri kombinácii filtrov musí výsledok spĺňať všetky zadané
-podmienky. `obstaravatel_id` je interné ID z `/api/obstaravatelia`.
-Pri filtrovaní podľa IČO sa zohľadnia aj záznamy s chýbajúcimi úvodnými nulami.
-Obstarávateľ sa páruje cez vyhlásenia, výsledky a dostupné ID profilu ÚVO
-v zdroji dokumentu.
+**Príklad odpovede**
 
-Zhody majú rovnaké metadáta prílohy a `subor_url` ako pri vyhľadávaní v jednom
-dokumente. Navyše obsahujú `dokument_id`, `dokument_nazov`, `order_id` a `eks_id`.
-Pri nulovej zhode je `data: []`. Neplatný alebo chýbajúci rozsah či výraz
-vráti `422`.
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "offset": 0,
+        "limit": 20,
+        "order_by": "zaznam_vytvoreny asc, id asc",
+        "min_created_at": "2025-05-20T08:00:00.000Z",
+        "max_created_at": "2025-05-20T08:00:00.000Z"
+    },
+    "data": [
+        {
+            "kod": "401101A001",
+            "nazov": "Obnova obecnej budovy",
+            "stav": "V realizácii",
+            "zameranie_projektu": null,
+            "celkova_zazmluvnena_suma": "120000.0",
+            "zazmluvnena_suma_nfp": "108000.0",
+            "poskytnute_prostriedky": "35000.0",
+            "skutocna_realizacia_zaciatok": "2025-07-01T10:00:00.000+02:00",
+            "skutocna_realizacia_koniec": null,
+            "planovana_realizacia_zaciatok": "2025-07-01T08:00:00.000Z",
+            "planovana_realizacia_koniec": "2025-12-31T08:00:00.000Z",
+            "datum_zaciatku_hlavnych_aktivit": null,
+            "datum_konca_hlavnych_aktivit": null,
+            "cislo_zmluvy": "NFP-2025-001",
+            "priority": [
+                {
+                    "id": 12,
+                    "kod": "P2",
+                    "nazov": "Zelenšia Európa"
+                }
+            ],
+            "specificke_ciele": [
+                {
+                    "id": 13,
+                    "kod": "RSO2.1"
+                }
+            ],
+            "opatrenia": null,
+            "zonfp": null,
+            "miesta_realizacie": null,
+            "popis": "Zateplenie a výmena okien.",
+            "popis_vychodiskovej_situacie": null,
+            "popis_sposobu_realizacie": null,
+            "popis_situacie_po_realizacii": null,
+            "popis_kapacity_prijimatela": null,
+            "aktivity": null,
+            "ukazovatel_vystupu": null,
+            "ukazovatel_vysledku": null,
+            "oblast_intervencie": null,
+            "polozky_rozpoctu": null,
+            "monitorovacie_terminy": null,
+            "id": 901,
+            "zdroj": "ITMS21+",
+            "zaznam_vytvoreny": "2025-05-20T10:00:00.000+02:00",
+            "zaznam_aktualizovany": "2025-07-08T14:00:00.000+02:00",
+            "dostupny_v_zdroji": true,
+            "prijimatel": {
+                "meno": "Mesto Príklad",
+                "ico": "00123456",
+                "dic": "2020123456"
+            },
+            "vyzva": {
+                "id": 42,
+                "kod": "PSK-PRIKLAD-01",
+                "nazov": "Energetická obnova verejných budov",
+                "typ": "Dopytová",
+                "stav": "vyhlasena",
+                "druh": null,
+                "datum_vyhlasenia": "2025-01-10T09:00:00.000Z",
+                "datum_ukoncenia": "2025-06-30T12:00:00.000Z",
+                "vyhlasovatel_meno": "Orgán programu Príklad",
+                "vyhlasovatel_ico": null
+            },
+            "program": {
+                "id": 10,
+                "kod": "401000",
+                "nazov": "Program Slovensko",
+                "kod_cci": "2021SK16FFPR001"
+            }
+        }
+    ]
+}
+```
+
+### 10. Získanie výziev ITMS21+
+
+**Endpoint** `/api/itms21_vyzvy`
+
+**Metóda** `GET`
+
+**Popis** Získa vyhlásené výzvy ITMS21+ vrátane dátumov, vyhlasovateľa, programu, špecifických cieľov a súm. Pole `id` je zdrojové ID výzvy.
+
+**Query parametre**
+
+- `id[]` (integer[], voliteľné) – Zdrojové ID výziev ITMS21+.
+- `kod[]` (string[], voliteľné) – Kódy výziev.
+- `nazov[]` (string[], voliteľné) – Slovenské názvy výziev.
+- `typ[]` (string[], voliteľné) – Typy výziev.
+- `stav[]` (string[], voliteľné) – Stavy výziev `zrusena`, `uzavreta`, `pozastavena` alebo `vyhlasena`.
+- `datum_vyhlasenia_od` (date, voliteľné) – Dolná hranica dátumu vyhlásenia vrátane.
+- `datum_vyhlasenia_do` (date, voliteľné) – Horná hranica dátumu vyhlásenia vrátane.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
+
+Stav výzvy zodpovedá prvému aktívnemu príznaku v poradí `zrusena`, `uzavreta`, `pozastavena`, `vyhlasena`. Bez aktívneho príznaku je stav `null`.
+
+**Príklad požiadavky**
+
+```http
+GET /api/itms21_vyzvy?kod[]=PSK-PRIKLAD-01&stav[]=vyhlasena&limit=10
+```
+
+**Príklad odpovede**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "offset": 0,
+        "limit": 10,
+        "order_by": "zaznam_vytvoreny asc, id asc",
+        "min_created_at": "2025-01-10T08:00:00.000Z",
+        "max_created_at": "2025-01-10T08:00:00.000Z"
+    },
+    "data": [
+        {
+            "id": 42,
+            "kod": "PSK-PRIKLAD-01",
+            "nazov": "Energetická obnova verejných budov",
+            "nazov_de": null,
+            "nazov_en": null,
+            "zaznam_vytvoreny": "2025-01-10T09:00:00.000+01:00",
+            "zaznam_aktualizovany": "2025-01-13T13:00:00.000+01:00",
+            "typ": "Dopytová",
+            "druh": null,
+            "stav": "vyhlasena",
+            "vyhlasovatel": {
+                "id": 51
+            },
+            "datum_vyhlasenia": "2025-01-10T10:00:00.000+01:00",
+            "datum_ukoncenia": "2025-06-30T14:00:00.000+02:00",
+            "suma_eu": "850000.0",
+            "suma_sr": "150000.0",
+            "program": {
+                "id": 10,
+                "kod": "401000"
+            },
+            "specificke_ciele": [
+                {
+                    "id": 13,
+                    "kod": "RSO2.1"
+                }
+            ]
+        }
+    ]
+}
+```
+
+### 11. Získanie programov ITMS21+
+
+**Endpoint** `/api/itms21_programy`
+
+**Metóda** `GET`
+
+**Popis** Získa programy ITMS21+ vrátane kódu CCI, typu programu, riadiaceho orgánu, súm a dostupného opisu. Pole `id` je zdrojové ID programu.
+
+**Query parametre**
+
+- `id[]` (integer[], voliteľné) – Zdrojové ID programov ITMS21+.
+- `kod[]` (string[], voliteľné) – Kódy programov.
+- `nazov[]` (string[], voliteľné) – Slovenské názvy programov.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
+
+**Príklad požiadavky**
+
+```http
+GET /api/itms21_programy?kod[]=401000&limit=10
+```
+
+**Príklad odpovede**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "offset": 0,
+        "limit": 10,
+        "order_by": "zaznam_vytvoreny asc, id asc",
+        "min_created_at": "2024-01-01T08:00:00.000Z",
+        "max_created_at": "2024-01-01T08:00:00.000Z"
+    },
+    "data": [
+        {
+            "id": 10,
+            "kod": "401000",
+            "nazov": "Program Slovensko",
+            "nazov_de": null,
+            "nazov_en": "Slovakia Programme",
+            "zaznam_vytvoreny": "2024-01-01T09:00:00.000+01:00",
+            "zaznam_aktualizovany": "2025-02-10T13:00:00.000+01:00",
+            "kod_cci": "2021SK16FFPR001",
+            "skratka": "PSK",
+            "typ_programu": {
+                "kod": "P"
+            },
+            "suma_eu": "8500000.0",
+            "suma_sr": "1500000.0",
+            "suma_spolu": "10000000.0",
+            "riadiaci_organ": {
+                "id": 51,
+                "nazov": "Orgán programu Príklad"
+            },
+            "popis": null
+        }
+    ]
+}
+```
+
+### 12. Získanie priorít ITMS21+
+
+**Endpoint** `/api/itms21_priority`
+
+**Metóda** `GET`
+
+**Popis** Získa priority ITMS21+ vrátane ich programu. Pole `id` je zdrojové ID priority.
+
+**Query parametre**
+
+- `id[]` (integer[], voliteľné) – Zdrojové ID priorít ITMS21+.
+- `kod[]` (string[], voliteľné) – Kódy priorít.
+- `nazov[]` (string[], voliteľné) – Slovenské názvy priorít.
+- `program[]` (string[], voliteľné) – Kódy alebo slovenské názvy programov.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
+
+**Príklad požiadavky**
+
+```http
+GET /api/itms21_priority?program[]=401000&limit=10
+```
+
+**Príklad odpovede**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "offset": 0,
+        "limit": 10,
+        "order_by": "zaznam_vytvoreny asc, id asc",
+        "min_created_at": "2024-01-01T08:00:00.000Z",
+        "max_created_at": "2024-01-01T08:00:00.000Z"
+    },
+    "data": [
+        {
+            "id": 12,
+            "kod": "P2",
+            "nazov": "Zelenšia Európa",
+            "nazov_de": null,
+            "nazov_en": "A greener Europe",
+            "zaznam_vytvoreny": "2024-01-01T09:00:00.000+01:00",
+            "zaznam_aktualizovany": "2025-02-10T13:00:00.000+01:00",
+            "program": {
+                "id": 10,
+                "kod": "401000",
+                "nazov": "Program Slovensko"
+            }
+        }
+    ]
+}
+```
+
+### 13. Získanie dokumentov obstarávaní
+
+**Endpoint** `/api/dokumenty_obstaravani`
+
+**Metóda** `GET`
+
+**Popis** Získa dokumenty vybraných zákaziek s načítanými metadátami, zdrojmi a aktuálnymi deduplikovanými prílohami. Dokumenty sú zoradené od najnovších podľa dátumu zverejnenia a pri rovnakom dátume od najvyššieho ID.
+
+**Query parametre**
+
+- `order_id[]` (integer[], voliteľné) – Identifikátory zákaziek ÚVO.
+- `eks_id[]` (string[], voliteľné) – Identifikátory zákaziek EKS, napríklad `Z2026000123`.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
+
+Zadajte aspoň jeden identifikátor zákazky. Pri zadaní oboch filtrov sa vrátia dokumenty všetkých vybraných zákaziek. API vráti `422 Unprocessable Entity` pri chýbajúcom alebo neplatnom identifikátore.
+
+V poli `prilohy` je pri každom súbore veľkosť v bajtoch a priamy odkaz na stiahnutie `subor_url`. Nepoužiteľná uložená URL sa vráti ako `null`. Príznak `vyhladavatelne` označuje prílohu v stave `processed` alebo `partial` s fulltextovým indexom. Dokument bez aktuálnych príloh má `prilohy: []`.
+
+**Príklad požiadavky**
+
+```http
+GET /api/dokumenty_obstaravani?order_id[]=567257&limit=20&offset=0
+```
+
+**Príklad odpovede**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "limit": 20,
+        "offset": 0,
+        "order_by": "datum_zverejnenia desc, id desc"
+    },
+    "data": [
+        {
+            "id": 12345,
+            "order_id": 567257,
+            "eks_id": null,
+            "nazov": "Súťažné podklady k obnove budovy",
+            "typ_dokumentu": "Súťažné podklady",
+            "nazov_zakazky": "Obnova obecnej budovy",
+            "obstaravatel_meno": "Mesto Príklad",
+            "obstaravatel_externe_id": 61101,
+            "zdroj": "uvo",
+            "externe_id": "987654",
+            "url": "https://www.uvo.gov.sk/vyhladavanie/vyhladavanie-dokumentov/detail/987654",
+            "datum_zverejnenia": "2025-06-01T10:00:00.000+02:00",
+            "datum_aktualizacie": "2025-06-03T12:00:00.000+02:00",
+            "zdroje": [
+                {
+                    "zdroj": "uvo",
+                    "externe_id": "987654",
+                    "url": "https://www.uvo.gov.sk/vyhladavanie/vyhladavanie-dokumentov/detail/987654"
+                }
+            ],
+            "prilohy": [
+                {
+                    "id": 12346,
+                    "externe_id": "678901",
+                    "nazov": "Technicka-specifikacia.pdf",
+                    "zdroj": "uvo",
+                    "mime_typ": "application/pdf",
+                    "velkost_suboru": 248640,
+                    "subor_url": "https://www.uvo.gov.sk/vyhladavanie/vyhladavanie-dokumentov/download/987654/678901",
+                    "stav_ocr": "processed",
+                    "vyhladavatelne": true
+                }
+            ]
+        }
+    ]
+}
+```
+
+### 14. Vyhľadávanie v prílohách jedného dokumentu
+
+**Endpoint** `/api/dokumenty_obstaravani/:id/vyhladavanie`
+
+**Metóda** `GET`
+
+**Popis** Vyhľadá výraz v indexovaných aktuálnych prílohách jedného dokumentu. Vracia metadáta zhodných príloh vrátane `subor_url`, zoradené podľa ID prílohy. Odpoveď je bez OCR textu a úryvkov.
+
+**Parametre cesty**
+
+- `id` (integer, povinné) – Interné ID dokumentu z `/api/dokumenty_obstaravani`.
+
+**Query parametre**
+
+- `query` (string, povinné) – Hľadaný výraz s dĺžkou najviac 300 znakov.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
+
+Pri nulovej zhode je `data: []`. API vráti `404 Not Found` pri neexistujúcom dokumente a `422 Unprocessable Entity` pri chýbajúcom alebo neplatnom výraze.
+
+**Príklad požiadavky**
+
+```http
+GET /api/dokumenty_obstaravani/12345/vyhladavanie?query=izol%C3%A1cia&limit=20
+```
+
+**Príklad odpovede**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "limit": 20,
+        "offset": 0,
+        "order_by": "id asc",
+        "dokument_id": 12345
+    },
+    "data": [
+        {
+            "id": 12346,
+            "externe_id": "678901",
+            "nazov": "Technicka-specifikacia.pdf",
+            "zdroj": "uvo",
+            "mime_typ": "application/pdf",
+            "velkost_suboru": 248640,
+            "subor_url": "https://www.uvo.gov.sk/vyhladavanie/vyhladavanie-dokumentov/download/987654/678901",
+            "stav_ocr": "processed",
+            "vyhladavatelne": true
+        }
+    ]
+}
+```
+
+### 15. Vyhľadávanie v dokumentoch podľa zákazky alebo obstarávateľa
+
+**Endpoint** `/api/dokumenty_obstaravani/vyhladavanie`
+
+**Metóda** `GET`
+
+**Popis** Vyhľadá výraz v indexovaných prílohách dokumentov zákazky alebo obstarávateľa. Vracia metadáta zhodných príloh vrátane `subor_url`, ID a názvu dokumentu a identifikátora zákazky. Odpoveď je bez OCR textu a úryvkov.
+
+**Query parametre**
+
+- `query` (string, povinné) – Hľadaný výraz s dĺžkou najviac 300 znakov.
+- `order_id` (integer, voliteľné) – Identifikátor jednej zákazky ÚVO.
+- `obstaravatel_ico` (string, voliteľné) – IČO jedného obstarávateľa. Zohľadnia sa aj evidované varianty s chýbajúcimi úvodnými nulami.
+- `obstaravatel_id` (integer, voliteľné) – Interné ID jedného obstarávateľa z `/api/obstaravatelia`.
+- `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
+- `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
+
+Zadajte aspoň jeden filter spomedzi `order_id`, `obstaravatel_ico` a `obstaravatel_id`. Pri kombinácii filtrov musí výsledok spĺňať všetky zadané podmienky. Obstarávateľ sa páruje cez vyhlásenia, výsledky a dostupné ID profilu ÚVO v zdroji dokumentu.
+
+Pri nulovej zhode je `data: []`. API vráti `422 Unprocessable Entity` pri chýbajúcom alebo neplatnom filtri rozsahu či výraze.
+
+**Príklady požiadaviek**
+
+```http
+GET /api/dokumenty_obstaravani/vyhladavanie?order_id=567257&query=izol%C3%A1cia&limit=20
+GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_ico=00123456&query=izol%C3%A1cia&limit=20
+GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=13&query=izol%C3%A1cia&limit=20
+```
+
+**Príklad odpovede**
+
+```json
+{
+    "summary": {
+        "total_records": 1,
+        "requested_records": 1,
+        "limit": 20,
+        "offset": 0,
+        "order_by": "id asc"
+    },
+    "data": [
+        {
+            "id": 12346,
+            "externe_id": "678901",
+            "nazov": "Technicka-specifikacia.pdf",
+            "zdroj": "uvo",
+            "mime_typ": "application/pdf",
+            "velkost_suboru": 248640,
+            "subor_url": "https://www.uvo.gov.sk/vyhladavanie/vyhladavanie-dokumentov/download/987654/678901",
+            "stav_ocr": "processed",
+            "vyhladavatelne": true,
+            "dokument_id": 12345,
+            "dokument_nazov": "Súťažné podklady k obnove budovy",
+            "order_id": 567257,
+            "eks_id": null
+        }
+    ]
+}
+```
 
 ### Poznámky
 
