@@ -1013,6 +1013,98 @@ GET /api/subjekty?ico=35815256
 }
 ```
 
+### 9. Projekty, výzvy, programy a priority ITMS21+
+
+Všetky štyri endpointy vyžadujú platený API prístup a hlavičku `ApiToken`.
+Pole `id` vo výstupe obsahuje zdrojové ID z ITMS21+. Odpoveď obsahuje
+`summary` a pole `data`. Záznamy sú zoradené vzostupne podľa dátumu vytvorenia
+v ITMS21+ a potom podľa zdrojového ID. Chýbajúce dátumy sa radia na koniec.
+`limit` je predvolene a maximálne 100, `offset` je predvolene 0.
+
+| Endpoint | Voliteľné filtre okrem `limit` a `offset` |
+| --- | --- |
+| `GET /api/itms21_projekty` | `id[]`, `kod[]`, `stav[]`, `prijimatel_ico[]`, `vyhlasovatel_ico[]`, `program[]`, `priorita_kod[]`, `priorita_nazov[]`, `vyzva_kod[]`, `vyzva_nazov[]`, `vyzva_typ[]`, `vyzva_stav[]`, `datum_zaciatku_realizacie_od`, `datum_zaciatku_realizacie_do`, `datum_konca_realizacie_od`, `datum_konca_realizacie_do` |
+| `GET /api/itms21_vyzvy` | `id[]`, `kod[]`, `nazov[]`, `typ[]`, `stav[]`, `datum_vyhlasenia_od`, `datum_vyhlasenia_do` |
+| `GET /api/itms21_programy` | `id[]`, `kod[]`, `nazov[]` |
+| `GET /api/itms21_priority` | `id[]`, `kod[]`, `nazov[]`, `program[]` |
+
+Textové filtre porovnávajú celé hodnoty bez ohľadu na veľkosť písmen.
+`program[]` prijíma kód alebo slovenský názov programu, `nazov[]` filtruje
+podľa slovenského názvu. Rozsahy dátumov projektov filtrujú skutočný začiatok
+a koniec realizácie vrátane hraničných dní. Stav výzvy je prvý aktívny príznak
+v poradí `zrusena`, `uzavreta`, `pozastavena`, `vyhlasena`. Bez aktívneho
+príznaku je stav `null`.
+
+Projekty vracajú prijímateľa, výzvu, program, priority, zmluvné sumy, dátumy
+realizácie a dostupné detaily ako opis, miesta, aktivity, ukazovatele a rozpočet.
+Priority v projekte vychádzajú z jeho špecifických cieľov. Pri chýbajúcom
+detaile ostáva dostupný základný záznam. Príznak `dostupny_v_zdroji` označuje
+dostupnosť projektu podľa posledného importu.
+
+```http
+GET /api/itms21_projekty?prijimatel_ico[]=00123456&limit=20
+ApiToken: <token>
+```
+
+### 10. Dokumenty obstarávaní
+
+Endpointy vyžadujú platený prístup a hlavičku `ApiToken`. Podporujú
+`limit` (predvolene a najviac 100) a `offset` (predvolene 0).
+Odpoveď má formát `summary` a `data`.
+
+#### Zoznam dokumentov zákazky
+
+`GET /api/dokumenty_obstaravani?order_id[]=567257`
+
+Zadajte aspoň jedno ÚVO `order_id[]` alebo EKS `eks_id[]` (napríklad
+`Z2026000123`). Pri zadaní oboch filtrov sa vrátia dokumenty všetkých
+vybraných zákaziek. Dokumenty sú zoradené od najnovšieho podľa dátumu
+zverejnenia a pri rovnakom dátume od najvyššieho `id`.
+Zoznam zahŕňa dokumenty s načítanými metadátami.
+
+Každý dokument obsahuje `id`, `order_id`, `eks_id`, `nazov`, `typ_dokumentu`,
+`nazov_zakazky`, `obstaravatel_meno`, `obstaravatel_externe_id`, `zdroj`,
+`externe_id`, `url`, `datum_zverejnenia`, `datum_aktualizacie`, pole `zdroje`
+s odkazmi na zdrojové záznamy a pole `prilohy` s aktuálnymi deduplikovanými
+prílohami. Dokument bez aktuálnych príloh má `prilohy: []`.
+
+Každá príloha obsahuje `id`, `externe_id`, `nazov`, `zdroj`, `mime_typ`,
+`velkost_suboru` v bajtoch, `subor_url`, `stav_ocr` a `vyhladavatelne`.
+`subor_url` je priama HTTP/HTTPS adresa na stiahnutie zo zdrojového portálu
+alebo `null`, ak uložená adresa nie je použiteľná. `vyhladavatelne` znamená,
+že príloha má v stave `processed` alebo `partial` dostupný fulltextový index.
+
+#### Fulltext v prílohách jedného dokumentu
+
+`GET /api/dokumenty_obstaravani/123/vyhladavanie?query=izol%C3%A1cia`
+
+`123` je `id` dokumentu zo zoznamu. `query` je povinný text s dĺžkou najviac
+300 znakov. Hľadá sa v indexe aktuálnych príloh daného dokumentu. Pole `data`
+obsahuje rovnaké metadáta zhodných príloh ako `prilohy` v zozname, vrátane
+`subor_url`, zoradené podľa `id`. OCR text ani úryvky sa v odpovedi neposielajú.
+Pri nulovej zhode je `data: []`. Pri neexistujúcom dokumente API vráti `404`
+a pri chýbajúcom alebo neplatnom výraze vráti `422`.
+
+#### Fulltext podľa zákazky alebo obstarávateľa
+
+```http
+GET /api/dokumenty_obstaravani/vyhladavanie?order_id=567257&query=izol%C3%A1cia
+GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_ico=00123456&query=izol%C3%A1cia
+GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=123&query=izol%C3%A1cia
+```
+
+Zadajte povinný `query` a aspoň jeden z uvedených filtrov. Každý filter prijíma
+jednu hodnotu. Pri kombinácii filtrov musí výsledok spĺňať všetky zadané
+podmienky. `obstaravatel_id` je interné ID z `/api/obstaravatelia`.
+Pri filtrovaní podľa IČO sa zohľadnia aj záznamy s chýbajúcimi úvodnými nulami.
+Obstarávateľ sa páruje cez vyhlásenia, výsledky a dostupné ID profilu ÚVO
+v zdroji dokumentu.
+
+Zhody majú rovnaké metadáta prílohy a `subor_url` ako pri vyhľadávaní v jednom
+dokumente. Navyše obsahujú `dokument_id`, `dokument_nazov`, `order_id` a `eks_id`.
+Pri nulovej zhode je `data: []`. Neplatný alebo chýbajúci rozsah či výraz
+vráti `422`.
+
 ### Poznámky
 
 - Parameter `limit` je pre všetky endpointy obmedzený na hodnotu 100. Pri zoznamových endpointoch určuje počet vrátených záznamov na jednu požiadavku; pri endpointoch `/api/ruz_zavierky` určuje počet rokov zahrnutých do výstupu.
