@@ -69,6 +69,7 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
             "formular": "OZNÁMENIE O VÝSLEDKU VEREJNÉHO OBSTARÁVANIA – VYBRANÉ ODVETVIA",
             "obstaravatel_id": 9282,
             "obstaravatel_meno": "Dopravný podnik Bratislava, akciová spoločnosť",
+            "obstaravatel_ico": "00492736",
             "obstravatel_ico": "00492736",
             "rozdelenie_na_casti": false,
             "phz": null,
@@ -107,9 +108,10 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
             "formular": null,
             "obstaravatel_id": 11050,
             "obstaravatel_meno": "Dopravný podnik mesta Košice, akciová spoločnosť",
+            "obstaravatel_ico": "31701914",
             "obstravatel_ico": "31701914",
             "rozdelenie_na_casti": null,
-            "phz": "2640.0",
+            "phz": 2640.0,
             "eufondy": false,
             "uspesne": true,
             "zaznam_vytvoreny": "2022-05-06T00:49:02.990Z",
@@ -138,7 +140,7 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
                     "obstaravanie_id": 1698418,
                     "datum_uzavretia_zmluvy": "2022-03-21T08:54:00.000Z",
                     "pocet_ponuk": null,
-                    "finalna_suma": "2639.9",
+                    "finalna_suma": 2639.9,
                     "mena": "EUR",
                     "dph": 20,
                     "dodavatel_id": 18769,
@@ -167,8 +169,8 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
                     "identifikator_zmluvy": "CON-0001",
                     "identifikator_ponuky": "TEN-0001",
                     "popis": "Časť plnenia zmluvy realizovaná subdodávateľom",
-                    "podiel_percent": "25.0",
-                    "odhadovana_hodnota": "10000.0",
+                    "podiel_percent": 25.0,
+                    "odhadovana_hodnota": 10000.0,
                     "mena": "EUR",
                     "zdrojove_polia": {},
                     "zaznam_vytvoreny": "2026-07-07T12:00:00.000Z",
@@ -235,12 +237,13 @@ GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
             ],
             "obstaravatel_id": 86958,
             "obstaravatel_meno": "Dopravný podnik mesta Martin, s.r.o.",
+            "obstaravatel_ico": "53560922",
             "obstravatel_ico": "53560922",
             "znacka": "DPMM/VO/1/2021",
             "datum_zverejnenia": "2021-03-09T00:00:00.000Z",
             "formular": "OZNÁMENIE O VYHLÁSENÍ VEREJNÉHO OBSTARÁVANIA",
             "typ": "Tovary",
-            "phz": "9520000.0",
+            "phz": 9520000.0,
             "rozsah": null,
             "rozsah_od": null,
             "rozsah_do": null,
@@ -309,12 +312,13 @@ GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
             ],
             "obstaravatel_id": 86958,
             "obstaravatel_meno": "Dopravný podnik mesta Martin, s.r.o.",
+            "obstaravatel_ico": "53560922",
             "obstravatel_ico": "53560922",
             "znacka": "01_23",
             "datum_zverejnenia": "2023-04-18T00:00:00.000Z",
             "formular": "OZNÁMENIE O VYHLÁSENÍ VEREJNÉHO OBSTARÁVANIA – VYBRANÉ ODVETVIA",
             "typ": "Tovary",
-            "phz": "1765717.5",
+            "phz": 1765717.5,
             "rozsah": null,
             "rozsah_od": null,
             "rozsah_do": null,
@@ -383,12 +387,13 @@ GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
             ],
             "obstaravatel_id": 86958,
             "obstaravatel_meno": "Dopravný podnik mesta Martin, s.r.o.",
+            "obstaravatel_ico": "53560922",
             "obstravatel_ico": "53560922",
             "znacka": "02_23",
             "datum_zverejnenia": "2023-10-03T00:00:00.000Z",
             "formular": "OZNÁMENIE O VYHLÁSENÍ VEREJNÉHO OBSTARÁVANIA – VYBRANÉ ODVETVIA",
             "typ": "Tovary",
-            "phz": "3958300.0",
+            "phz": 3958300.0,
             "rozsah": null,
             "rozsah_od": null,
             "rozsah_do": null,
@@ -609,8 +614,8 @@ GET /api/crz_zmluvy?objednavatel_ico[]=42085519&dodavatel_ico[]=51196603
             "predmet_zmluvy": "Zmluva o dodaní potravinového tovaru",
             "datum_ucinnosti": "2023-04-20T00:00:00.000Z",
             "datum_platnosti_do": null,
-            "suma_zmluvy": "0",
-            "suma_celkovo": "0",
+            "suma_zmluvy": 0,
+            "suma_celkovo": 0,
             "komentar": "",
             "datum_zverejnenia": "2023-04-19T15:45:15.000Z",
             "objednavatel_ico": "42085519",
@@ -644,8 +649,8 @@ GET /api/crz_zmluvy?objednavatel_ico[]=42085519&dodavatel_ico[]=51196603
             "predmet_zmluvy": "Zmluva o dodaní potravinového tovaru",
             "datum_ucinnosti": "2024-03-06T00:00:00.000Z",
             "datum_platnosti_do": "2024-10-31T00:00:00.000Z",
-            "suma_zmluvy": "0",
-            "suma_celkovo": "0",
+            "suma_zmluvy": 0,
+            "suma_celkovo": 0,
             "komentar": "",
             "datum_zverejnenia": "2024-03-05T13:55:06.000Z",
             "objednavatel_ico": "42085519",
@@ -768,9 +773,9 @@ GET /api/suhrnne_spravy?obstaravatel_ico[]=00306177&dodavatel_ico[]=35763469&dat
                     "datum_uzavretia_zmluvy": "2024-03-20T00:00:00.000Z",
                     "url_zmluvy": "https://example.sk/zmluva",
                     "typ_hodnoty": "value",
-                    "hodnota": "12000.0",
-                    "najnizsia_ponuka": "11000.0",
-                    "najvyssia_ponuka": "14000.0",
+                    "hodnota": 12000.0,
+                    "najnizsia_ponuka": 11000.0,
+                    "najvyssia_ponuka": 14000.0,
                     "mena": "EUR",
                     "dodavatel_meno": "Dodávateľ, s.r.o.",
                     "dodavatel_ico": "35763469",
@@ -809,7 +814,7 @@ GET /api/suhrnne_spravy?obstaravatel_ico[]=00306177&dodavatel_ico[]=35763469&dat
 
 **Query parametre:**
 
-- `ico` (string, povinné): IČO subjektu, pre ktorý sa majú načítať RÚZ dáta.
+- `ico` (string, povinné): Osemmiestne IČO subjektu vrátane úvodných núl. Medzery medzi číslicami sa ignorujú.
 - `iba_vyplnene` (boolean, voliteľné): Ak je nastavené na `true`, vo výstupe budú iba riadky, ktoré majú vyplnenú aspoň jednu hodnotu. Predvolené: `false`.
 - `limit` (integer, voliteľné): Maximálny počet rokov, ktoré sa majú zahrnúť do výstupu. Predvolené: `1`, maximum: `100`.
 
@@ -967,7 +972,7 @@ GET /api/ruz_zavierky?ico=35815256&iba_vyplnene=true&limit=5
 
 **Query parametre:**
 
-- `ico` (string, povinné): IČO subjektu, pre ktorý sa majú načítať základné údaje.
+- `ico` (string, povinné): Osemmiestne IČO subjektu vrátane úvodných núl. Medzery medzi číslicami sa ignorujú.
 
 **Príklad požiadavky:**
 
@@ -1069,10 +1074,10 @@ GET /api/itms21_projekty?prijimatel_ico[]=00123456&limit=20&offset=0
             "nazov": "Obnova obecnej budovy",
             "stav": "V realizácii",
             "zameranie_projektu": null,
-            "celkova_zazmluvnena_suma": "120000.0",
-            "zazmluvnena_suma_nfp": "108000.0",
-            "poskytnute_prostriedky": "35000.0",
-            "skutocna_realizacia_zaciatok": "2025-07-01T10:00:00.000+02:00",
+            "celkova_zazmluvnena_suma": 120000.0,
+            "zazmluvnena_suma_nfp": 108000.0,
+            "poskytnute_prostriedky": 35000.0,
+            "skutocna_realizacia_zaciatok": "2025-07-01T08:00:00.000Z",
             "skutocna_realizacia_koniec": null,
             "planovana_realizacia_zaciatok": "2025-07-01T08:00:00.000Z",
             "planovana_realizacia_koniec": "2025-12-31T08:00:00.000Z",
@@ -1108,8 +1113,8 @@ GET /api/itms21_projekty?prijimatel_ico[]=00123456&limit=20&offset=0
             "monitorovacie_terminy": null,
             "id": 901,
             "zdroj": "ITMS21+",
-            "zaznam_vytvoreny": "2025-05-20T10:00:00.000+02:00",
-            "zaznam_aktualizovany": "2025-07-08T14:00:00.000+02:00",
+            "zaznam_vytvoreny": "2025-05-20T08:00:00.000Z",
+            "zaznam_aktualizovany": "2025-07-08T12:00:00.000Z",
             "dostupny_v_zdroji": true,
             "prijimatel": {
                 "meno": "Mesto Príklad",
@@ -1187,18 +1192,18 @@ GET /api/itms21_vyzvy?kod[]=PSK-PRIKLAD-01&stav[]=vyhlasena&limit=10
             "nazov": "Energetická obnova verejných budov",
             "nazov_de": null,
             "nazov_en": null,
-            "zaznam_vytvoreny": "2025-01-10T09:00:00.000+01:00",
-            "zaznam_aktualizovany": "2025-01-13T13:00:00.000+01:00",
+            "zaznam_vytvoreny": "2025-01-10T08:00:00.000Z",
+            "zaznam_aktualizovany": "2025-01-13T12:00:00.000Z",
             "typ": "Dopytová",
             "druh": null,
             "stav": "vyhlasena",
             "vyhlasovatel": {
                 "id": 51
             },
-            "datum_vyhlasenia": "2025-01-10T10:00:00.000+01:00",
-            "datum_ukoncenia": "2025-06-30T14:00:00.000+02:00",
-            "suma_eu": "850000.0",
-            "suma_sr": "150000.0",
+            "datum_vyhlasenia": "2025-01-10T09:00:00.000Z",
+            "datum_ukoncenia": "2025-06-30T12:00:00.000Z",
+            "suma_eu": 850000.0,
+            "suma_sr": 150000.0,
             "program": {
                 "id": 10,
                 "kod": "401000"
@@ -1256,16 +1261,16 @@ GET /api/itms21_programy?kod[]=401000&limit=10
             "nazov": "Program Slovensko",
             "nazov_de": null,
             "nazov_en": "Slovakia Programme",
-            "zaznam_vytvoreny": "2024-01-01T09:00:00.000+01:00",
-            "zaznam_aktualizovany": "2025-02-10T13:00:00.000+01:00",
+            "zaznam_vytvoreny": "2024-01-01T08:00:00.000Z",
+            "zaznam_aktualizovany": "2025-02-10T12:00:00.000Z",
             "kod_cci": "2021SK16FFPR001",
             "skratka": "PSK",
             "typ_programu": {
                 "kod": "P"
             },
-            "suma_eu": "8500000.0",
-            "suma_sr": "1500000.0",
-            "suma_spolu": "10000000.0",
+            "suma_eu": 8500000.0,
+            "suma_sr": 1500000.0,
+            "suma_spolu": 10000000.0,
             "riadiaci_organ": {
                 "id": 51,
                 "nazov": "Orgán programu Príklad"
@@ -1319,8 +1324,8 @@ GET /api/itms21_priority?program[]=401000&limit=10
             "nazov": "Zelenšia Európa",
             "nazov_de": null,
             "nazov_en": "A greener Europe",
-            "zaznam_vytvoreny": "2024-01-01T09:00:00.000+01:00",
-            "zaznam_aktualizovany": "2025-02-10T13:00:00.000+01:00",
+            "zaznam_vytvoreny": "2024-01-01T08:00:00.000Z",
+            "zaznam_aktualizovany": "2025-02-10T12:00:00.000Z",
             "program": {
                 "id": 10,
                 "kod": "401000",
@@ -1349,6 +1354,8 @@ GET /api/itms21_priority?program[]=401000&limit=10
 Zadajte aspoň jeden identifikátor zákazky. Pri zadaní oboch filtrov sa vrátia dokumenty všetkých vybraných zákaziek. API vráti `422 Unprocessable Entity` pri chýbajúcom alebo neplatnom identifikátore.
 
 V poli `prilohy` je pri každom súbore veľkosť v bajtoch a priamy odkaz na stiahnutie `subor_url`. Nepoužiteľná uložená URL sa vráti ako `null`. Príznak `vyhladavatelne` označuje prílohu v stave `processed` alebo `partial` s fulltextovým indexom. Dokument bez aktuálnych príloh má `prilohy: []`.
+
+Na fulltext v jednom dokumente použite hodnotu `data[].id` v ceste `/api/dokumenty_obstaravani/:id/vyhladavanie`. Celú zákazku alebo zákazky obstarávateľa môžete prehľadať priamo cez `/api/dokumenty_obstaravani/vyhladavanie`.
 
 **Príklad požiadavky**
 
@@ -1380,8 +1387,8 @@ GET /api/dokumenty_obstaravani?order_id[]=567257&limit=20&offset=0
             "zdroj": "uvo",
             "externe_id": "987654",
             "url": "https://www.uvo.gov.sk/vyhladavanie/vyhladavanie-dokumentov/detail/987654",
-            "datum_zverejnenia": "2025-06-01T10:00:00.000+02:00",
-            "datum_aktualizacie": "2025-06-03T12:00:00.000+02:00",
+            "datum_zverejnenia": "2025-06-01T08:00:00.000Z",
+            "datum_aktualizacie": "2025-06-03T10:00:00.000Z",
             "zdroje": [
                 {
                     "zdroj": "uvo",
@@ -1473,12 +1480,13 @@ GET /api/dokumenty_obstaravani/12345/vyhladavanie?query=izol%C3%A1cia&limit=20
 
 - `query` (string, povinné) – Hľadaný výraz s dĺžkou najviac 300 znakov.
 - `order_id` (integer, voliteľné) – Identifikátor jednej zákazky ÚVO.
+- `eks_id` (string, voliteľné) – Identifikátor jednej zákazky EKS, napríklad `Z20260001`.
 - `obstaravatel_ico` (string, voliteľné) – IČO jedného obstarávateľa. Zohľadnia sa aj evidované varianty s chýbajúcimi úvodnými nulami.
 - `obstaravatel_id` (integer, voliteľné) – Interné ID jedného obstarávateľa z `/api/obstaravatelia`.
 - `limit` (integer, voliteľné) – Maximálny počet výsledkov na vrátenie (predvolené 100, maximum 100).
 - `offset` (integer, voliteľné) – Počet preskočených výsledkov (predvolené 0).
 
-Zadajte aspoň jeden filter spomedzi `order_id`, `obstaravatel_ico` a `obstaravatel_id`. Pri kombinácii filtrov musí výsledok spĺňať všetky zadané podmienky. Obstarávateľ sa páruje cez vyhlásenia, výsledky a dostupné ID profilu ÚVO v zdroji dokumentu.
+Zadajte aspoň jeden filter spomedzi `order_id`, `eks_id`, `obstaravatel_ico` a `obstaravatel_id`. Pri kombinácii filtrov musí výsledok spĺňať všetky zadané podmienky. Pri vyhľadávaní podľa obstarávateľa API zistí jeho zákazky z oznámení, výsledkov a dokumentov priradených k jeho profilu ÚVO. Potom prehľadá všetky dokumenty týchto zákaziek podľa `order_id` alebo `eks_id` bez ohľadu na zdroj dokumentu.
 
 Pri nulovej zhode je `data: []`. API vráti `422 Unprocessable Entity` pri chýbajúcom alebo neplatnom filtri rozsahu či výraze.
 
@@ -1486,6 +1494,7 @@ Pri nulovej zhode je `data: []`. API vráti `422 Unprocessable Entity` pri chýb
 
 ```http
 GET /api/dokumenty_obstaravani/vyhladavanie?order_id=567257&query=izol%C3%A1cia&limit=20
+GET /api/dokumenty_obstaravani/vyhladavanie?eks_id=Z20260001&query=izol%C3%A1cia&limit=20
 GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_ico=00123456&query=izol%C3%A1cia&limit=20
 GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=13&query=izol%C3%A1cia&limit=20
 ```
@@ -1523,8 +1532,12 @@ GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=13&query=izol%C3%A1c
 
 ### Poznámky
 
+- Vyhlásené aj ukončené obstarávania vracajú IČO v `obstaravatel_ico`. Pôvodný kľúč `obstravatel_ico` je alias s rovnakou hodnotou.
 - `limit` a `offset` sú nezáporné celé čísla. Limit má strop 100 a `summary.limit` je vždy číslo. V `/api/ruz_zavierky` určuje počet rokov a pri vynechaní alebo hodnote `0` sa použije jeden rok.
 - Dátumy zadávajte vo formáte `YYYY-MM-DD`. Podporovaný je aj zápis `DD.MM.YYYY`. Z časovej pečiatky ISO 8601 sa použije jej dátumová časť. Hranice rozsahu zahŕňajú celý kalendárny deň v zóne `Europe/Bratislava`.
+- Časové pečiatky vo výstupe sú v ISO 8601 v UTC (`Z`). Dátumy bez času sú vo formáte `YYYY-MM-DD`.
+- Peňažné sumy sa vracajú ako JSON čísla. Neznáme alebo nečitateľné sumy sa vracajú ako `null`. Na výpočty s presnou desatinnou hodnotou použite desatinný typ klienta.
+- V `/api/subjekty` a `/api/ruz_zavierky` sa pri chýbajúcom alebo neplatnom IČO vracia `422` s hláškou podľa typu chyby.
 - Neznámy endpoint, neplatný dátum, neplatné stránkovanie alebo nesprávny tvar zoznamového filtra vrátia `404` s poľom `error` v JSON.
 - API vracia dáta vo formáte JSON s kódovaním UTF-8.
 
