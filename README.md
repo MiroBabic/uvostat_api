@@ -55,7 +55,7 @@ GET /api/ukoncene_obstaravania?datum_zverejnenia_od=2022-01-01&datum_zverejnenia
         "total_records": 599,
         "requested_records": 50,
         "offset": 0,
-        "limit": "50",
+        "limit": 50,
         "order_by": "zaznam_vytvoreny asc",
         "min_created_at": "2022-03-30T00:00:08.510Z",
         "max_created_at": "2023-06-26T22:59:03.465Z"
@@ -569,7 +569,7 @@ GET /api/dodavatelia?ico[]=46456082
 
 **Metóda:** `GET`
 
-**Popis:** Získa záznamy o CRZ zmluvách.
+**Popis:** Získa záznamy o CRZ zmluvách vrátane zmlúv bez príloh. `summary.total_records` počíta každú zmluvu raz. Ak zadáte IČO objednávateľa aj dodávateľa, zmluva musí vyhovovať obom filtrom.
 
 **Query parametre:**
 
@@ -594,7 +594,7 @@ GET /api/crz_zmluvy?objednavatel_ico[]=42085519&dodavatel_ico[]=51196603
         "requested_records": 2,
         "offset": 0,
         "limit": 100,
-        "order_by": "zaznam_vytvoreny asc",
+        "order_by": "zaznam_vytvoreny asc, id asc",
         "min_created_at": "2023-04-20T19:30:53.627Z",
         "max_created_at": "2024-03-06T20:31:53.545Z"
     },
@@ -1523,15 +1523,14 @@ GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=13&query=izol%C3%A1c
 
 ### Poznámky
 
-- Parameter `limit` je pre všetky endpointy obmedzený na hodnotu 100. Pri zoznamových endpointoch určuje počet vrátených záznamov na jednu požiadavku; pri endpointoch `/api/ruz_zavierky` určuje počet rokov zahrnutých do výstupu.
-- Dátumy by mali byť poskytnuté vo formáte `YYYY-MM-DD`.
+- `limit` a `offset` sú nezáporné celé čísla. Limit má strop 100 a `summary.limit` je vždy číslo. V `/api/ruz_zavierky` určuje počet rokov a pri vynechaní alebo hodnote `0` sa použije jeden rok.
+- Dátumy zadávajte vo formáte `YYYY-MM-DD`. Podporovaný je aj zápis `DD.MM.YYYY`. Z časovej pečiatky ISO 8601 sa použije jej dátumová časť. Hranice rozsahu zahŕňajú celý kalendárny deň v zóne `Europe/Bratislava`.
+- Neznámy endpoint, neplatný dátum, neplatné stránkovanie alebo nesprávny tvar zoznamového filtra vrátia `404` s poľom `error` v JSON.
 - API vracia dáta vo formáte JSON s kódovaním UTF-8.
 
-#### Dôležité:
-Ak je možné, že v dotaze bude viac ako jeden záznam (napríklad pre parameter `obstaravatel_id`), parameter musí byť volaný s použitím hranatých zátvoriek `[]`.
-
-Príklad správnej požiadavky:
+Zoznamové filtre zapisujte s hranatými zátvorkami `[]`. Hodnoty zadajte opakovaním parametra alebo ich oddeľte čiarkou v jednej hodnote.
 
 ```http
-GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
+GET /api/vyhlasene_obstaravania?obstaravatel_id[]=86958&obstaravatel_id[]=86959
+GET /api/vyhlasene_obstaravania?obstaravatel_id[]=86958,86959
 ```
