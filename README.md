@@ -271,13 +271,13 @@ GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
                 {
                     "nuts": "SK031",
                     "about": "Predmetom zákazky je dodávka 35 ks autobusov s príslušenstvom a vo výbave podľa priloženej technickej špecifikácie, ktorá tvorí Prílohu č.1 Kúpnej zmluvy pre potreby spoločnosti. \nVerejný obstarávateľ požaduje dodať nové, úplne nízko podlažné (dvojnápravové) autobusy mestskej hromadnej dopravy dĺžky 12 metrov s pohonom CNG /stlačený zemný plyn/ v počte 35 ks, vrátane riadiacich, kamerových, informačných, komunikačných a tarifných systémov (ďalej len autobusy alebo aj vozidlá, jednotlivo autobus alebo aj vozidlo, resp. súhrnne len tovar v príslušnom gramatickom tvare) bližšie špecifikované v Prílohe č. 1 tejto zmluvy, za stanovených podmienok v tejto zmluve, ktoré budú kompletne schválené na prevádzku v premávke na pozemných komunikáciách.\nPodrobné vymedzenie realizácie predmetu zákazky tvorí časť B. Opis predmetu zákazky, v nadväznosti na technickú špecifikáciu predmetu zákazky a obchodné (zmluvné) podmienky, ktoré tvoria časť D. \"Obchodné podmienky dodania predmetu zákazky\" Súťažných podkladov.",
-                    "enddate": "",
+                    "enddate": null,
                     "quality": "Nie",
                     "costprice": "Cena",
-                    "startdate": "",
+                    "startdate": null,
                     "finalplace": "Dopravný podnik mesta Martin, s. r. o., Námestie S. H. Vajanského 1/1, 036 01 Martin - katastrálne územie mesta",
                     "timelength": "v mesiacoch (od zadania zákazky) : 7",
-                    "order_value": "9 520 000,00",
+                    "order_value": 9520000.0,
                     "order_currency": "EUR"
                 }
             ],
@@ -346,13 +346,13 @@ GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
                 {
                     "nuts": "SK031",
                     "about": "Predmetom zákazky je dodávka tovaru - 5 ks mestských autobusov s CNG pohonom 12 m pre obstarávateľa Dopravný podnik mesta Martin, s. r. o. Podrobnejšie vymedzenie predmetu zákazky je uvedené v časti B. Opis predmetu zákazky súťažných podkladov",
-                    "enddate": "",
+                    "enddate": null,
                     "quality": "Nie",
                     "costprice": "Cena",
-                    "startdate": "",
+                    "startdate": null,
                     "finalplace": "Dopravný podnik mesta Martin, s.r.o., Flámska 1, 036 01 Martin",
                     "timelength": "24",
-                    "order_value": "1 765 717,50",
+                    "order_value": 1765717.5,
                     "order_currency": "EUR"
                 }
             ],
@@ -421,13 +421,13 @@ GET /api/vyhlasene_obstaravania?cpv[]=34121100-2&obstaravatel_id[]=86958
                 {
                     "nuts": "SK031",
                     "about": "Predmetom zákazky je dodávka tovaru - 10 ks mestských autobusov s CNG pohonom 12 m pre obstarávateľa Dopravný podnik mesta Martin, s. r. o. Podrobnejšie vymedzenie predmetu zákazky je uvedené v časti B. Opis predmetu zákazky súťažných podkladov",
-                    "enddate": "",
+                    "enddate": null,
                     "quality": "Nie",
                     "costprice": "Cena",
-                    "startdate": "",
+                    "startdate": null,
                     "finalplace": "Dopravný podnik mesta Martin, s.r.o., Flámska 1, 036 01 Martin",
                     "timelength": "24",
-                    "order_value": "3 958 300,00",
+                    "order_value": 3958300.0,
                     "order_currency": "EUR"
                 }
             ],
@@ -1105,12 +1105,22 @@ GET /api/itms21_projekty?prijimatel_ico[]=00123456&limit=20&offset=0
             "popis_sposobu_realizacie": null,
             "popis_situacie_po_realizacii": null,
             "popis_kapacity_prijimatela": null,
-            "aktivity": null,
+            "aktivity": [
+                {
+                    "id": 1201,
+                    "datumKoncaPlanovany": "2025-12-30T23:00:00.000Z"
+                }
+            ],
             "ukazovatel_vystupu": null,
             "ukazovatel_vysledku": null,
             "oblast_intervencie": null,
             "polozky_rozpoctu": null,
-            "monitorovacie_terminy": null,
+            "monitorovacie_terminy": [
+                {
+                    "terminMonitorovania": "2025-12-31",
+                    "datumPredlozeniaNajneskorsi": "2026-01-31"
+                }
+            ],
             "id": 901,
             "zdroj": "ITMS21+",
             "zaznam_vytvoreny": "2025-05-20T08:00:00.000Z",
@@ -1535,8 +1545,9 @@ GET /api/dokumenty_obstaravani/vyhladavanie?obstaravatel_id=13&query=izol%C3%A1c
 - Vyhlásené aj ukončené obstarávania vracajú IČO v `obstaravatel_ico`. Pôvodný kľúč `obstravatel_ico` je alias s rovnakou hodnotou.
 - `limit` a `offset` sú nezáporné celé čísla. Limit má strop 100 a `summary.limit` je vždy číslo. V `/api/ruz_zavierky` určuje počet rokov a pri vynechaní alebo hodnote `0` sa použije jeden rok.
 - Dátumy zadávajte vo formáte `YYYY-MM-DD`. Podporovaný je aj zápis `DD.MM.YYYY`. Z časovej pečiatky ISO 8601 sa použije jej dátumová časť. Hranice rozsahu zahŕňajú celý kalendárny deň v zóne `Europe/Bratislava`.
-- Časové pečiatky vo výstupe sú v ISO 8601 v UTC (`Z`). Dátumy bez času sú vo formáte `YYYY-MM-DD`.
-- Peňažné sumy sa vracajú ako JSON čísla. Neznáme alebo nečitateľné sumy sa vracajú ako `null`. Na výpočty s presnou desatinnou hodnotou použite desatinný typ klienta.
+- Časové pečiatky vo výstupe sú v ISO 8601 v UTC (`Z`), aj keď ich zdroj ITMS21+ poskytol ako milisekundy od epochy. Zdrojové časové pečiatky bez posunu sa interpretujú ako UTC. Dátumy bez času sú vo formáte `YYYY-MM-DD`. Pri monitorovacích termínoch ITMS sa používa kalendárny deň v zóne `Europe/Bratislava`. Polia `startdate` a `enddate` v častiach zákazky majú pri chýbajúcom alebo nečitateľnom dátume hodnotu `null`.
+- Peňažné sumy vrátane `rozdelenie_na_casti_list[].order_value`, `rozsah_od` a `rozsah_do` sa vracajú ako desatinné JSON čísla. Neznáme alebo nečitateľné sumy sa vracajú ako `null`. Na výpočty s presnou desatinnou hodnotou použite desatinný typ klienta.
+- Číselné hodnoty ukazovateľov ITMS vrátane `hodnota_cielova_celkova` sa vracajú ako JSON čísla.
 - V `/api/subjekty` a `/api/ruz_zavierky` sa pri chýbajúcom alebo neplatnom IČO vracia `422` s hláškou podľa typu chyby.
 - Neznámy endpoint, neplatný dátum, neplatné stránkovanie alebo nesprávny tvar zoznamového filtra vrátia `404` s poľom `error` v JSON.
 - API vracia dáta vo formáte JSON s kódovaním UTF-8.
